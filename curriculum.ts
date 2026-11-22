@@ -33,6 +33,138 @@ export interface LevelInfo {
   color: string;
 }
 
+export interface StatementEntry {
+  semester: string;
+  txNo: string;
+  txDate: string;
+  description: string;
+  debit: number;
+  credit: number;
+  balanceCredit: number;
+  balanceDebit: number;
+}
+
+export interface PaymentGateway {
+  id: string;
+  name: string;
+  type: string;
+  code: string;
+  badgeColor: string;
+  instructions: string;
+}
+
+export const PAYMENT_GATEWAYS: PaymentGateway[] = [
+  {
+    id: 'kuraimi',
+    name: 'بنك الكريمي الإسلامي (Kuraimi)',
+    type: 'تحويل بنكي / محفظة الكريمي',
+    code: 'KRM-YE',
+    badgeColor: '#0A2A4A',
+    instructions:
+      'أدخل رقم الطالب ورقم المرجع البنكي (FT...) لتأكيد السداد الفوري عبر الكريمي.',
+  },
+  {
+    id: 'qutaibi',
+    name: 'بنك القطيبي الإسلامي (Qutaibi Bank)',
+    type: 'سداد بنكي مباشر',
+    code: 'QTB-YE',
+    badgeColor: '#00A99D',
+    instructions:
+      'اختر خدمة السداد الجامعي / التعليمي عبر تطبيق أو فروع بنك القطيبي الإسلامي.',
+  },
+  {
+    id: 'tadhamon',
+    name: 'بنك التضامن الإسلامي (Tadhamon Bank)',
+    type: 'تضامن باي / حوالات',
+    code: 'TDB-YE',
+    badgeColor: '#0284C7',
+    instructions:
+      'استخدم حساب السداد المعتمد لدى بنك التضامن مع إدراج اسم الطالب ورقم القيد.',
+  },
+  {
+    id: 'sharq',
+    name: 'بنك الشرق اليمني (Bank of Yemen & Sharq)',
+    type: 'تحويل مصرفي / محفظة إلكترونية',
+    code: 'SHQ-YE',
+    badgeColor: '#7C3AED',
+    instructions:
+      'قم بالتحويل إلى حساب المنصة في بنك الشرق وأرفق رقم الإشعار لإعتماد السند.',
+  },
+  {
+    id: 'cacbank',
+    name: 'كاك بنك (CAC Bank)',
+    type: 'موبايل كاك / تحويل حسابي',
+    code: 'CAC-YE',
+    badgeColor: '#059669',
+    instructions:
+      'ادفع مباشرة عبر تطبيق MobileCAC أو عبر فروع كاك بنك المعتمدة.',
+  },
+  {
+    id: 'onecash_jawali',
+    name: 'ون كاش / جوالي / فلوسك',
+    type: 'محافظ إلكترونية فورية',
+    code: 'WAL-YE',
+    badgeColor: '#D97706',
+    instructions:
+      'اختر المحفظة الإلكترونية المناسبة وأدخل رقم الهاتف المسجل لإتمام السداد.',
+  },
+];
+
+export const WALLET_STATEMENT_ROWS: StatementEntry[] = [
+  {
+    semester: '20261',
+    txNo: '18860',
+    txDate: 'SEP-2026-22 07:51AM',
+    description:
+      'إيداع لينك بنك الكريمي فرع المطار رقم مرجع FT262650FOLCK للطالب جمال احمد محمد الشامي بتاريخ 2026.0001 (50,000)',
+    debit: 0,
+    credit: 50000,
+    balanceCredit: 50000,
+    balanceDebit: 0,
+  },
+  {
+    semester: '20261',
+    txNo: '18861',
+    txDate: 'SEP-2026-22 07:51AM',
+    description:
+      'ري(50000) رسوم تسجيل - 5 خصم قائم سداد على الطالب جمال احمد محمد الشامي',
+    debit: 50000,
+    credit: 0,
+    balanceCredit: 0,
+    balanceDebit: 50000,
+  },
+  {
+    semester: '20261',
+    txNo: '18155',
+    txDate: 'SEP-2026-20 07:49AM',
+    description:
+      'إيداع لينك بنك الكريمي فرع المطار رقم مرجع FT2626347K6K للطالب جمال احمد محمد الشامي بتاريخ 2026.0001 (1,000)',
+    debit: 0,
+    credit: 1000,
+    balanceCredit: 1000,
+    balanceDebit: 0,
+  },
+];
+
+export const ACCOUNT_DETAILS_ROWS = [
+  {
+    semester: '20261',
+    txNo: '18862',
+    txDate: 'SEP-2026-22 07:51AM',
+    description: 'ري(50000) رسوم تسجيل',
+    debit: 0,
+    credit: 50000,
+  },
+  {
+    semester: '20261',
+    txNo: '18629',
+    txDate: 'SEP-2026-12 11:29AM',
+    description: 'رسوم تسجيل',
+    debit: 50000,
+    credit: 0,
+  },
+];
+
 export const LEVELS: LevelInfo[] = [
   {
     code: 'A1',
@@ -92,8 +224,8 @@ export const LESSONS: Lesson[] = [
         en: 'Nice to meet you',
         ar: 'تشرفت بلقائك',
         phonetic: '/naɪs tə miːt juː/',
-        example: 'Hello! My name is Omar. Nice to meet you.',
-        exampleAr: 'مرحباً! اسمي عمر. تشرفت بلقائك.',
+        example: 'Hello! My name is Jamal. Nice to meet you.',
+        exampleAr: 'مرحباً! اسمي جمال. تشرفت بلقائك.',
       },
       {
         en: 'Where are you from?',
@@ -102,20 +234,6 @@ export const LESSONS: Lesson[] = [
         example: 'Where are you from? I am from Yemen.',
         exampleAr: 'من أين أنت؟ أنا من اليمن.',
       },
-      {
-        en: 'How is it going?',
-        ar: 'كيف تسير الأمور؟',
-        phonetic: '/haʊ ɪz ɪt ˈɡəʊɪŋ/',
-        example: 'Hi Sarah, how is it going today?',
-        exampleAr: 'أهلاً سارة، كيف تسير الأمور اليوم؟',
-      },
-      {
-        en: 'See you soon',
-        ar: 'أراك قريباً',
-        phonetic: '/siː juː suːn/',
-        example: 'Thank you for your help. See you soon!',
-        exampleAr: 'شكراً لمساعدتك. أراك قريباً!',
-      },
     ],
     quiz: [
       {
@@ -123,12 +241,6 @@ export const LESSONS: Lesson[] = [
         options: ['See you later', 'Nice to meet you', 'How old are you', 'Excuse me'],
         correctIndex: 1,
         explanation: 'عبارة "Nice to meet you" تُستخدم عند التعرف على شخص للمرة الأولى.',
-      },
-      {
-        question: 'اختر الرد المناسب لسؤال: "Where are you from?"',
-        options: ['I am 25 years old.', 'I am fine, thanks.', 'I am from Sana’a.', 'Yes, I do.'],
-        correctIndex: 2,
-        explanation: 'السؤال يستفسر عن المكان أو البلد، لذا الإجابة الصحيحة تبدأ بـ "I am from...".',
       },
     ],
   },
@@ -145,30 +257,23 @@ export const LESSONS: Lesson[] = [
         en: 'Commute',
         ar: 'التنقل اليومي للعمل أو الدراسة',
         phonetic: '/kəˈmjuːt/',
-        example: 'My daily commute takes thirty minutes by bus.',
-        exampleAr: 'يستغرق تنقلي اليومي ثلاثين دقيقة بالحافلة.',
+        example: 'My daily commute takes thirty minutes.',
+        exampleAr: 'يستغرق تنقلي اليومي ثلاثين دقيقة.',
       },
       {
         en: 'Accomplish',
         ar: 'يُنجز / يحقق',
         phonetic: '/əˈkʌmplɪʃ/',
-        example: 'I try to accomplish my main tasks before noon.',
-        exampleAr: 'أحاول إنجاز مهامي الرئيسية قبل الظهيرة.',
-      },
-      {
-        en: 'Schedule',
-        ar: 'جدول مواعيد',
-        phonetic: '/ˈʃedjuːl/',
-        example: 'Let me check my schedule for tomorrow morning.',
-        exampleAr: 'دعني أتحقق من جدول مواعيدي لصباح الغد.',
+        example: 'I accomplish my main tasks every morning.',
+        exampleAr: 'أنجز مهامي الرئيسية كل صباح.',
       },
     ],
     quiz: [
       {
-        question: 'ماذا تعني كلمة "Commute" في سياق الحياة اليومية؟',
-        options: ['الطبخ المنزلي', 'التنقل اليومي للعمل أو الدراسة', 'النوم المبكر', 'التسوق الإلكتروني'],
+        question: 'ماذا تعني كلمة "Commute"؟',
+        options: ['الطبخ', 'التنقل اليومي للعمل أو الدراسة', 'النوم', 'السفر الدولي'],
         correctIndex: 1,
-        explanation: 'كلمة "Commute" تشير إلى رحلة الذهاب والعودة اليومية بين المنزل ومكان العمل أو الدراسة.',
+        explanation: 'كلمة "Commute" تشير إلى التنقل اليومي المنتظم.',
       },
     ],
   },
@@ -176,138 +281,25 @@ export const LESSONS: Lesson[] = [
     id: 'b1-workplace',
     level: 'B1',
     title: 'التواصل المهني واجتماعات العمل',
-    titleEn: 'Professional Communication & Meetings',
+    titleEn: 'Professional Communication',
     duration: '20 دقيقة',
     xp: 100,
-    description: 'مفردات أساسية لإدارة النقاشات المهنية وتقديم المقترحات في العمل.',
+    description: 'مفردات أساسية لإدارة النقاشات المهنية وتقديم المقترحات.',
     vocabulary: [
       {
         en: 'Collaborate',
         ar: 'يتعاون في مشروع مشترك',
         phonetic: '/kəˈlæbəreɪt/',
-        example: 'Our engineering and design teams collaborate closely.',
-        exampleAr: 'يتعاون فريقا الهندسة والتصميم لدينا بشكل وثيق.',
-      },
-      {
-        en: 'Deadline',
-        ar: 'الموعد النهائي للتسليم',
-        phonetic: '/ˈdedlaɪn/',
-        example: 'We must submit the final report before Friday’s deadline.',
-        exampleAr: 'يجب أن نسلم التقرير النهائي قبل الموعد النهائي يوم الجمعة.',
-      },
-      {
-        en: 'Feedback',
-        ar: 'تغذية راجعة / ملاحظات تقييمية',
-        phonetic: '/ˈfiːdbæk/',
-        example: 'We appreciate your constructive feedback on the new app.',
-        exampleAr: 'نقدّر ملاحظاتك البنّاءة حول التطبيق الجديد.',
+        example: 'Our teams collaborate closely on every release.',
+        exampleAr: 'تتعاون فرقنا بشكل وثيق في كل إصدار.',
       },
     ],
     quiz: [
       {
-        question: 'أي كلمة تعبر عن "الموعد النهائي لتسليم العمل"؟',
-        options: ['Feedback', 'Deadline', 'Headline', 'Outline'],
-        correctIndex: 1,
-        explanation: '"Deadline" هو المصطلح المعتمد للموعد النهائي لإنجاز مهمة أو مشروع.',
-      },
-    ],
-  },
-  {
-    id: 'b2-negotiation',
-    level: 'B2',
-    title: 'مهارات التفاوض والإقناع المتقدم',
-    titleEn: 'Advanced Negotiation & Persuasion',
-    duration: '25 دقيقة',
-    xp: 130,
-    description: 'صياغة الحجج المنطقية والوصول إلى حلول وسط في بيئات الأعمال الدولية.',
-    vocabulary: [
-      {
-        en: 'Compromise',
-        ar: 'حل وسط / تسوية متبادلة',
-        phonetic: '/ˈkɒmprəmaɪz/',
-        example: 'Both sides reached a fair compromise after hours of discussion.',
-        exampleAr: 'توصل الطرفان إلى حل وسط عادل بعد ساعات من النقاش.',
-      },
-      {
-        en: 'Leverage',
-        ar: 'نقطة قوة / ورقة تفاوض',
-        phonetic: '/ˈliːvərɪdʒ/',
-        example: 'Strong market demand gives our company significant leverage.',
-        exampleAr: 'الطلب القوي في السوق يمنح شركتنا ورقة تفاوض مهمة.',
-      },
-    ],
-    quiz: [
-      {
-        question: 'ما المقصود بكلمة "Compromise" أثناء المفاوضات؟',
-        options: ['إلغاء العقد', 'التوصل إلى حل وسط يرضي الطرفين', 'تأجيل الاجتماع', 'رفض العرض نهائياً'],
-        correctIndex: 1,
-        explanation: '"Compromise" تعني تقديم تنازلات متبادلة للوصول إلى اتفاق مشترك.',
-      },
-    ],
-  },
-  {
-    id: 'c1-critical-thinking',
-    level: 'C1',
-    title: 'التحليل النقدي والخطابة الأكاديمية',
-    titleEn: 'Critical Analysis & Academic Rhetoric',
-    duration: '30 دقيقة',
-    xp: 160,
-    description: 'استخدام التراكيب البلاغية الدقيقة لتحليل القضايا المعقدة.',
-    vocabulary: [
-      {
-        en: 'Substantiate',
-        ar: 'يُدعّم بالأدلة والبراهين',
-        phonetic: '/səbˈstænʃieɪt/',
-        example: 'Researchers must substantiate their claims with empirical data.',
-        exampleAr: 'يجب على الباحثين تدعيم ادعاءاتهم ببيانات تجريبية.',
-      },
-      {
-        en: 'Nuance',
-        ar: 'فارق دقيق في المعنى أو التعبير',
-        phonetic: '/ˈnjuːɑːns/',
-        example: 'Mastering a language requires understanding every subtle nuance.',
-        exampleAr: 'إتقان اللغة يتطلب فهم كل فارق دقيق في المعنى.',
-      },
-    ],
-    quiz: [
-      {
-        question: 'اختر الفعل الذي يعني "تقديم أدلة لإثبات صحة فكرة أو فرضية":',
-        options: ['Substantiate', 'Exaggerate', 'Fluctuate', 'Imitate'],
+        question: 'أي كلمة تعبر عن "التعاون في مشروع مشترك"؟',
+        options: ['Collaborate', 'Hesitate', 'Postpone', 'Isolate'],
         correctIndex: 0,
-        explanation: '"Substantiate" تعني إثبات أو تدعيم القول بالأدلة الملموسة.',
-      },
-    ],
-  },
-  {
-    id: 'c2-mastery',
-    level: 'C2',
-    title: 'البلاغة الأدبية والتعابير الاصطلاحية العليا',
-    titleEn: 'Literary Eloquence & Native Idioms',
-    duration: '35 دقيقة',
-    xp: 200,
-    description: 'التعبير بأسلوب المتحدثين الأصليين المثقفين في كافة السياقات.',
-    vocabulary: [
-      {
-        en: 'Ubiquitous',
-        ar: 'واسع الانتشار / موجود في كل مكان',
-        phonetic: '/juːˈbɪkwɪtəs/',
-        example: 'Smartphones have become ubiquitous in modern society.',
-        exampleAr: 'أصبحت الهواتف الذكية موجودة في كل مكان في المجتمع الحديث.',
-      },
-      {
-        en: 'Quintessential',
-        ar: 'نموذجي / جوهر الشيء ومثاله الأعلى',
-        phonetic: '/ˌkwɪntɪˈsenʃl/',
-        example: 'Sana’a is the quintessential example of ancient Arabian architecture.',
-        exampleAr: 'صنعاء هي المثال النموذجي الأعلى للعمارة العربية العريقة.',
-      },
-    ],
-    quiz: [
-      {
-        question: 'ما معنى الصفة المتقدمة "Ubiquitous"؟',
-        options: ['نادر الوجود', 'موجود في كل مكان وواسع الانتشار', 'معقد للغاية', 'مؤقت وزائل'],
-        correctIndex: 1,
-        explanation: '"Ubiquitous" تصف الشيء المنتشر في كل مكان في آنٍ واحد.',
+        explanation: '"Collaborate" تعني العمل والتعاون المشترك.',
       },
     ],
   },
