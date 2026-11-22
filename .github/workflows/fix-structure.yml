@@ -1,0 +1,28 @@
+name: Fix Structure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move files to correct folders
+        run: |
+          mkdir -p app data
+          # انقل الملفات لمكانها الصح اذا كانت موجودة في الجذر
+          [ -f page.tsx ] && mv page.tsx app/page.tsx || true
+          [ -f layout.tsx ] && mv layout.tsx app/layout.tsx || true
+          [ -f globals.css ] && mv globals.css app/globals.css || true
+          [ -f curriculum.ts ] && mv curriculum.ts data/curriculum.ts || true
+          # امسح الملف الزايد
+          rm -f main.yml
+          ls -R
+      - name: Save changes
+        run: |
+          git config user.name "fix-bot"
+          git config user.email "fix@fix.com"
+          git add -A
+          git commit -m "Fix folder structure" || echo "No changes"
+          git push
