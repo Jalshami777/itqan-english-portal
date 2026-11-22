@@ -24,9 +24,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install dependencies and build static Next.js app
         run: |
           npm install
@@ -40,6 +37,7 @@ jobs:
       - name: Build Debug APK via Gradle
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload Debug APK Artifact
