@@ -1,4 +1,19 @@
-export type Lesson = {
+export interface VocabItem {
+  en: string;
+  ar: string;
+  phonetic: string;
+  example: string;
+  exampleAr: string;
+}
+
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
+export interface Lesson {
   id: string;
   level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   title: string;
@@ -6,149 +21,286 @@ export type Lesson = {
   duration: string;
   xp: number;
   description: string;
-  vocabulary: {
-    en: string;
-    ar: string;
-    phonetic: string;
-    example: string;
-    exampleAr: string;
-  }[];
-  quiz: {
-    question: string;
-    options: string[];
-    correctIndex: number;
-    explanation: string;
-  }[];
-};
+  vocabulary: VocabItem[];
+  quiz: QuizQuestion[];
+}
 
-export type Level = {
+export interface LevelInfo {
   code: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   name: string;
   nameEn: string;
   description: string;
   color: string;
-};
+}
 
-export const LEVELS: Level[] = [
-  { code: 'A1', name: 'تأسيسي', nameEn: 'Beginner', description: 'التحية والتعريف بالنفس والأرقام.', color: '#00A99D' },
-  { code: 'A2', name: 'ابتدائي', nameEn: 'Elementary', description: 'الحياة اليومية والتسوق والسفر البسيط.', color: '#0A2A4A' },
-  { code: 'B1', name: 'متوسط', nameEn: 'Intermediate', description: 'التحدث بطلاقة عن العمل والدراسة.', color: '#F59E0B' },
-  { code: 'B2', name: 'فوق المتوسط', nameEn: 'Upper Intermediate', description: 'النقاشات والآراء والحجج.', color: '#8B5CF6' },
-  { code: 'C1', name: 'متقدم', nameEn: 'Advanced', description: 'اللغة الأكاديمية والمهنية المتقدمة.', color: '#EC4899' },
-  { code: 'C2', name: 'احترافي', nameEn: 'Proficient', description: 'إتقان كامل قريب من الناطق الأصلي.', color: '#EF4444' },
+export interface StatementEntry {
+  semester: string;
+  txNo: string;
+  txDate: string;
+  description: string;
+  debit: number;
+  credit: number;
+  balanceCredit: number;
+  balanceDebit: number;
+}
+
+export interface PaymentGateway {
+  id: string;
+  name: string;
+  type: string;
+  code: string;
+  badgeColor: string;
+  instructions: string;
+}
+
+export const PAYMENT_GATEWAYS: PaymentGateway[] = [
+  {
+    id: 'kuraimi',
+    name: 'بنك الكريمي الإسلامي (Kuraimi)',
+    type: 'تحويل بنكي / محفظة الكريمي',
+    code: 'KRM-YE',
+    badgeColor: '#0A2A4A',
+    instructions:
+      'أدخل رقم الطالب ورقم المرجع البنكي (FT...) لتأكيد السداد الفوري عبر الكريمي.',
+  },
+  {
+    id: 'qutaibi',
+    name: 'بنك القطيبي الإسلامي (Qutaibi Bank)',
+    type: 'سداد بنكي مباشر',
+    code: 'QTB-YE',
+    badgeColor: '#00A99D',
+    instructions:
+      'اختر خدمة السداد الجامعي / التعليمي عبر تطبيق أو فروع بنك القطيبي الإسلامي.',
+  },
+  {
+    id: 'tadhamon',
+    name: 'بنك التضامن الإسلامي (Tadhamon Bank)',
+    type: 'تضامن باي / حوالات',
+    code: 'TDB-YE',
+    badgeColor: '#0284C7',
+    instructions:
+      'استخدم حساب السداد المعتمد لدى بنك التضامن مع إدراج اسم الطالب ورقم القيد.',
+  },
+  {
+    id: 'sharq',
+    name: 'بنك الشرق اليمني (Bank of Yemen & Sharq)',
+    type: 'تحويل مصرفي / محفظة إلكترونية',
+    code: 'SHQ-YE',
+    badgeColor: '#7C3AED',
+    instructions:
+      'قم بالتحويل إلى حساب المنصة في بنك الشرق وأرفق رقم الإشعار لإعتماد السند.',
+  },
+  {
+    id: 'cacbank',
+    name: 'كاك بنك (CAC Bank)',
+    type: 'موبايل كاك / تحويل حسابي',
+    code: 'CAC-YE',
+    badgeColor: '#059669',
+    instructions:
+      'ادفع مباشرة عبر تطبيق MobileCAC أو عبر فروع كاك بنك المعتمدة.',
+  },
+  {
+    id: 'onecash_jawali',
+    name: 'ون كاش / جوالي / فلوسك',
+    type: 'محافظ إلكترونية فورية',
+    code: 'WAL-YE',
+    badgeColor: '#D97706',
+    instructions:
+      'اختر المحفظة الإلكترونية المناسبة وأدخل رقم الهاتف المسجل لإتمام السداد.',
+  },
 ];
 
-const vocab = (en: string, ar: string, example: string, exampleAr: string) => ({
-  en, ar, phonetic: '/.../', example, exampleAr,
-});
+export const WALLET_STATEMENT_ROWS: StatementEntry[] = [
+  {
+    semester: '20261',
+    txNo: '18860',
+    txDate: 'SEP-2026-22 07:51AM',
+    description:
+      'إيداع لينك بنك الكريمي فرع المطار رقم مرجع FT262650FOLCK للطالب جمال احمد محمد الشامي بتاريخ 2026.0001 (50,000)',
+    debit: 0,
+    credit: 50000,
+    balanceCredit: 50000,
+    balanceDebit: 0,
+  },
+  {
+    semester: '20261',
+    txNo: '18861',
+    txDate: 'SEP-2026-22 07:51AM',
+    description:
+      'ري(50000) رسوم تسجيل - 5 خصم قائم سداد على الطالب جمال احمد محمد الشامي',
+    debit: 50000,
+    credit: 0,
+    balanceCredit: 0,
+    balanceDebit: 50000,
+  },
+  {
+    semester: '20261',
+    txNo: '18155',
+    txDate: 'SEP-2026-20 07:49AM',
+    description:
+      'إيداع لينك بنك الكريمي فرع المطار رقم مرجع FT2626347K6K للطالب جمال احمد محمد الشامي بتاريخ 2026.0001 (1,000)',
+    debit: 0,
+    credit: 1000,
+    balanceCredit: 1000,
+    balanceDebit: 0,
+  },
+];
+
+export const ACCOUNT_DETAILS_ROWS = [
+  {
+    semester: '20261',
+    txNo: '18862',
+    txDate: 'SEP-2026-22 07:51AM',
+    description: 'ري(50000) رسوم تسجيل',
+    debit: 0,
+    credit: 50000,
+  },
+  {
+    semester: '20261',
+    txNo: '18629',
+    txDate: 'SEP-2026-12 11:29AM',
+    description: 'رسوم تسجيل',
+    debit: 50000,
+    credit: 0,
+  },
+];
+
+export const LEVELS: LevelInfo[] = [
+  {
+    code: 'A1',
+    name: 'المبتدئ التأسيسي',
+    nameEn: 'Beginner',
+    description: 'الحروف، التحيات، الأرقام، وتكوين الجمل البسيطة اليومية.',
+    color: '#00A99D',
+  },
+  {
+    code: 'A2',
+    name: 'المبتدئ المتقدم',
+    nameEn: 'Elementary',
+    description: 'التحدث عن الروتين اليومي، التسوق، الاتجاهات، والماضي البسيط.',
+    color: '#0284C7',
+  },
+  {
+    code: 'B1',
+    name: 'المتوسط',
+    nameEn: 'Intermediate',
+    description: 'إدارة المحادثات في السفر والعمل والتعبير عن الآراء والخطط.',
+    color: '#2563EB',
+  },
+  {
+    code: 'B2',
+    name: 'فوق المتوسط',
+    nameEn: 'Upper-Intermediate',
+    description: 'النقاش بطلاقة، فهم المقالات المعقدة، والكتابة الأكاديمية والمهنية.',
+    color: '#7C3AED',
+  },
+  {
+    code: 'C1',
+    name: 'المتقدم',
+    nameEn: 'Advanced',
+    description: 'استخدام اللغة بمرونة عالية في البيئات الأكاديمية والقيادية.',
+    color: '#DB2777',
+  },
+  {
+    code: 'C2',
+    name: 'الإتقان الاحترافي',
+    nameEn: 'Proficiency',
+    description: 'فهم أدق الفروق الدلالية والتعابير الاصطلاحية كمتحدث أصلي.',
+    color: '#0A2A4A',
+  },
+];
 
 export const LESSONS: Lesson[] = [
   {
-    id: 'a1-greetings', level: 'A1', title: 'التحية والتعريف بالنفس', titleEn: 'Greetings & Introductions',
-    duration: '10 دقيقة', xp: 50, description: 'تعلم كيف تحيي الناس وتعرف بنفسك بالإنجليزية.',
+    id: 'a1-greetings',
+    level: 'A1',
+    title: 'التحيات والتعارف الأساسي',
+    titleEn: 'Greetings & Introductions',
+    duration: '10 دقائق',
+    xp: 50,
+    description: 'تعلم كيف تبدأ محادثة وتعرف عن نفسك بثقة في المواقف اليومية.',
     vocabulary: [
-      vocab('Hello', 'مرحباً', 'Hello, my name is Ahmed.', 'مرحباً، اسمي أحمد.'),
-      vocab('Good morning', 'صباح الخير', 'Good morning, how are you?', 'صباح الخير، كيف حالك؟'),
+      {
+        en: 'Nice to meet you',
+        ar: 'تشرفت بلقائك',
+        phonetic: '/naɪs tə miːt juː/',
+        example: 'Hello! My name is Jamal. Nice to meet you.',
+        exampleAr: 'مرحباً! اسمي جمال. تشرفت بلقائك.',
+      },
+      {
+        en: 'Where are you from?',
+        ar: 'من أين أنت؟',
+        phonetic: '/weər ɑː juː frɒm/',
+        example: 'Where are you from? I am from Yemen.',
+        exampleAr: 'من أين أنت؟ أنا من اليمن.',
+      },
     ],
-    quiz: [{ question: 'ما معنى Hello؟', options: ['مرحباً', 'وداعاً', 'شكراً'], correctIndex: 0, explanation: 'Hello تعني مرحباً.' }],
+    quiz: [
+      {
+        question: 'ما هي العبارة الصحيحة لقول "تشرفت بلقائك" باللغة الإنجليزية؟',
+        options: ['See you later', 'Nice to meet you', 'How old are you', 'Excuse me'],
+        correctIndex: 1,
+        explanation: 'عبارة "Nice to meet you" تُستخدم عند التعرف على شخص للمرة الأولى.',
+      },
+    ],
   },
   {
-    id: 'a1-numbers', level: 'A1', title: 'الأرقام والأيام', titleEn: 'Numbers & Days',
-    duration: '12 دقيقة', xp: 50, description: 'الأرقام من 1 إلى 100 وأيام الأسبوع.',
+    id: 'a2-daily-routine',
+    level: 'A2',
+    title: 'الروتين اليومي وإدارة الوقت',
+    titleEn: 'Daily Routine & Time Management',
+    duration: '15 دقيقة',
+    xp: 75,
+    description: 'وصف الأنشطة اليومية باستخدام المضارع البسيط وظروف التكرار.',
     vocabulary: [
-      vocab('One', 'واحد', 'I have one book.', 'لدي كتاب واحد.'),
-      vocab('Monday', 'الاثنين', 'Today is Monday.', 'اليوم هو الاثنين.'),
+      {
+        en: 'Commute',
+        ar: 'التنقل اليومي للعمل أو الدراسة',
+        phonetic: '/kəˈmjuːt/',
+        example: 'My daily commute takes thirty minutes.',
+        exampleAr: 'يستغرق تنقلي اليومي ثلاثين دقيقة.',
+      },
+      {
+        en: 'Accomplish',
+        ar: 'يُنجز / يحقق',
+        phonetic: '/əˈkʌmplɪʃ/',
+        example: 'I accomplish my main tasks every morning.',
+        exampleAr: 'أنجز مهامي الرئيسية كل صباح.',
+      },
     ],
-    quiz: [{ question: 'ما معنى Monday؟', options: ['الاثنين', 'الجمعة', 'الأحد'], correctIndex: 0, explanation: 'Monday هو يوم الاثنين.' }],
+    quiz: [
+      {
+        question: 'ماذا تعني كلمة "Commute"؟',
+        options: ['الطبخ', 'التنقل اليومي للعمل أو الدراسة', 'النوم', 'السفر الدولي'],
+        correctIndex: 1,
+        explanation: 'كلمة "Commute" تشير إلى التنقل اليومي المنتظم.',
+      },
+    ],
   },
   {
-    id: 'a2-shopping', level: 'A2', title: 'التسوق والأسعار', titleEn: 'Shopping & Prices',
-    duration: '12 دقيقة', xp: 60, description: 'كيف تسأل عن السعر وتشتري في المتجر.',
+    id: 'b1-workplace',
+    level: 'B1',
+    title: 'التواصل المهني واجتماعات العمل',
+    titleEn: 'Professional Communication',
+    duration: '20 دقيقة',
+    xp: 100,
+    description: 'مفردات أساسية لإدارة النقاشات المهنية وتقديم المقترحات.',
     vocabulary: [
-      vocab('How much is this?', 'بكم هذا؟', 'How much is this shirt?', 'بكم هذا القميص؟'),
-      vocab('Discount', 'خصم', 'Is there a discount?', 'هل يوجد خصم؟'),
+      {
+        en: 'Collaborate',
+        ar: 'يتعاون في مشروع مشترك',
+        phonetic: '/kəˈlæbəreɪt/',
+        example: 'Our teams collaborate closely on every release.',
+        exampleAr: 'تتعاون فرقنا بشكل وثيق في كل إصدار.',
+      },
     ],
-    quiz: [{ question: 'كيف تسأل عن السعر؟', options: ['How much is this?', 'What is your name?', 'Where are you?'], correctIndex: 0, explanation: 'How much is this تعني بكم هذا؟' }],
-  },
-  {
-    id: 'a2-travel', level: 'A2', title: 'السفر والمطار', titleEn: 'Travel & Airport',
-    duration: '15 دقيقة', xp: 60, description: 'مفردات المطار والفندق والسفر.',
-    vocabulary: [
-      vocab('Boarding Pass', 'بطاقة صعود الطائرة', 'Here is my boarding pass.', 'هذه بطاقة صعود الطائرة.'),
-      vocab('Hotel', 'فندق', 'I booked a hotel.', 'حجزت فندقاً.'),
+    quiz: [
+      {
+        question: 'أي كلمة تعبر عن "التعاون في مشروع مشترك"؟',
+        options: ['Collaborate', 'Hesitate', 'Postpone', 'Isolate'],
+        correctIndex: 0,
+        explanation: '"Collaborate" تعني العمل والتعاون المشترك.',
+      },
     ],
-    quiz: [{ question: 'ما معنى Boarding Pass؟', options: ['بطاقة صعود الطائرة', 'جواز سفر', 'تذكرة قطار'], correctIndex: 0, explanation: 'Boarding Pass هي بطاقة صعود الطائرة.' }],
-  },
-  {
-    id: 'b1-work', level: 'B1', title: 'الإنجليزية في العمل', titleEn: 'English at Work',
-    duration: '15 دقيقة', xp: 70, description: 'الاجتماعات والإيميلات والعروض التقديمية.',
-    vocabulary: [
-      vocab('Meeting', 'اجتماع', 'We have a meeting at 10.', 'لدينا اجتماع الساعة 10.'),
-      vocab('Deadline', 'موعد نهائي', 'The deadline is Friday.', 'الموعد النهائي يوم الجمعة.'),
-    ],
-    quiz: [{ question: 'ما معنى Deadline؟', options: ['موعد نهائي', 'إجازة', 'راتب'], correctIndex: 0, explanation: 'Deadline تعني الموعد النهائي للتسليم.' }],
-  },
-  {
-    id: 'b1-opinion', level: 'B1', title: 'التعبير عن الرأي', titleEn: 'Expressing Opinions',
-    duration: '14 دقيقة', xp: 70, description: 'كيف تعبر عن رأيك وتوافق أو تعارض بلباقة.',
-    vocabulary: [
-      vocab('In my opinion', 'في رأيي', 'In my opinion, this is a good idea.', 'في رأيي، هذه فكرة جيدة.'),
-      vocab('I agree', 'أوافق', 'I agree with you.', 'أوافقك الرأي.'),
-    ],
-    quiz: [{ question: 'كيف تقول "في رأيي"؟', options: ['In my opinion', 'In my house', 'In my car'], correctIndex: 0, explanation: 'In my opinion تعني في رأيي.' }],
-  },
-  {
-    id: 'b2-debate', level: 'B2', title: 'النقاش والحجج', titleEn: 'Debate & Arguments',
-    duration: '18 دقيقة', xp: 80, description: 'بناء حجة قوية والرد على الآراء المخالفة.',
-    vocabulary: [
-      vocab('On the other hand', 'من ناحية أخرى', 'On the other hand, it is expensive.', 'من ناحية أخرى، إنه غالي.'),
-      vocab('Evidence', 'دليل', 'There is no evidence.', 'لا يوجد دليل.'),
-    ],
-    quiz: [{ question: 'ما معنى Evidence؟', options: ['دليل', 'قصة', 'حلم'], correctIndex: 0, explanation: 'Evidence تعني دليل.' }],
-  },
-  {
-    id: 'b2-movies', level: 'B2', title: 'الأفلام والثقافة', titleEn: 'Movies & Culture',
-    duration: '15 دقيقة', xp: 80, description: 'التحدث عن الأفلام والكتب والثقافة.',
-    vocabulary: [
-      vocab('Plot', 'حبكة / قصة', 'The plot was amazing.', 'كانت القصة رائعة.'),
-      vocab('Character', 'شخصية', 'My favorite character is Ali.', 'شخصيتي المفضلة هي علي.'),
-    ],
-    quiz: [{ question: 'ما معنى Plot في فيلم؟', options: ['حبكة / قصة', 'مسرح', 'أغنية'], correctIndex: 0, explanation: 'Plot تعني قصة الفيلم.' }],
-  },
-  {
-    id: 'c1-academic', level: 'C1', title: 'الكتابة الأكاديمية', titleEn: 'Academic Writing',
-    duration: '20 دقيقة', xp: 90, description: 'كتابة المقالات والتقارير بأسلوب أكاديمي.',
-    vocabulary: [
-      vocab('Furthermore', 'علاوة على ذلك', 'Furthermore, the results show...', 'علاوة على ذلك، النتائج تظهر...'),
-      vocab('Consequently', 'نتيجة لذلك', 'Consequently, we changed the plan.', 'نتيجة لذلك، غيرنا الخطة.'),
-    ],
-    quiz: [{ question: 'ما معنى Furthermore؟', options: ['علاوة على ذلك', 'أخيراً', 'بالمناسبة'], correctIndex: 0, explanation: 'Furthermore تعني علاوة على ذلك.' }],
-  },
-  {
-    id: 'c1-business', level: 'C1', title: 'إنجليزية الأعمال المتقدمة', titleEn: 'Advanced Business English',
-    duration: '20 دقيقة', xp: 90, description: 'التفاوض والعقود والعروض التجارية.',
-    vocabulary: [
-      vocab('Negotiation', 'تفاوض', 'The negotiation was successful.', 'كان التفاوض ناجحاً.'),
-      vocab('Revenue', 'إيرادات', 'Revenue increased this year.', 'زادت الإيرادات هذا العام.'),
-    ],
-    quiz: [{ question: 'ما معنى Revenue؟', options: ['إيرادات', 'خسارة', 'ضريبة'], correctIndex: 0, explanation: 'Revenue تعني الإيرادات.' }],
-  },
-  {
-    id: 'c2-idioms', level: 'C2', title: 'التعابير الاصطلاحية', titleEn: 'Idioms & Native Expressions',
-    duration: '18 دقيقة', xp: 100, description: 'تعابير يستخدمها الناطقون الأصليون.',
-    vocabulary: [
-      vocab('Break the ice', 'كسر الجمود', 'He told a joke to break the ice.', 'قال نكتة لكسر الجمود.'),
-      vocab('Piece of cake', 'سهل جداً', 'The exam was a piece of cake.', 'الامتحان كان سهلاً جداً.'),
-    ],
-    quiz: [{ question: 'ما معنى Piece of cake؟', options: ['سهل جداً', 'قطعة كيك', 'صعب'], correctIndex: 0, explanation: 'Piece of cake تعني سهل جداً.' }],
-  },
-  {
-    id: 'c2-fluency', level: 'C2', title: 'الطلاقة والخطابة', titleEn: 'Fluency & Public Speaking',
-    duration: '22 دقيقة', xp: 100, description: 'الخطابة والإلقاء بثقة أمام الجمهور.',
-    vocabulary: [
-      vocab('Persuade', 'يقنع', 'She persuaded the audience.', 'أقنعت الجمهور.'),
-      vocab('Eloquent', 'بليغ / فصيح', 'He is an eloquent speaker.', 'إنه متحدث بليغ.'),
-    ],
-    quiz: [{ question: 'ما معنى Persuade؟', options: ['يقنع', 'يضحك', 'ينام'], correctIndex: 0, explanation: 'Persuade تعني يقنع.' }],
   },
 ];
