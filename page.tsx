@@ -18,7 +18,7 @@ import {
   Sliders,
   PlusCircle,
 } from 'lucide-react';
-import { LEVELS, LESSONS, Lesson } from '@/data/curriculum';
+import { LEVELS, LESSONS, Lesson } from '../data/curriculum';
 
 type TabType = 'dashboard' | 'curriculum' | 'speech' | 'admin' | 'android';
 
