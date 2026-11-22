@@ -26,6 +26,12 @@ jobs:
 
       - name: Install dependencies and build static Next.js app
         run: |
+          if [ -f "page.tsx" ]; then
+            mkdir -p app
+            mv page.tsx app/page.tsx
+            mv layout.tsx app/layout.tsx || true
+            mv globals.css app/globals.css || true
+          fi
           npm install
           npm run build
 
